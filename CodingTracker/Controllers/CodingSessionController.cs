@@ -20,10 +20,15 @@ internal class CodingSessionController
             Console.WriteLine("Dates entered in correct order.");
         else
             Console.WriteLine("ERROR! endDate occurred prior to startDate.");
+
+        TimeSpan sessionLength = endDate - startDate;
+
+        Console.WriteLine($"The length of this coding session was {sessionLength.Days} days, {sessionLength.Hours} hours, {sessionLength.Minutes} minutes");
+
         Console.WriteLine("Enter a key to continue");
         Console.ReadKey();
-        // TODO: Implement endTime
         // TODO: Implement duration
+        // TODO: Implement a doWhile loop that continues until user enters an endDate that's AFTER the startDate
     }
 
     private static string GetDate()
@@ -34,7 +39,7 @@ internal class CodingSessionController
             new TextPrompt<string>("Enter the year:")
                 .Validate(year => Regex.IsMatch(year, @"^\d{4}$")
                     ? ValidationResult.Success()
-                    : ValidationResult.Error("[red]Invalid year. Enter a four-digit number.[/]"))
+                    : ValidationResult.Error("Invalid year. Enter a four-digit number."))
         );
 
         dateTime.month = AnsiConsole.Prompt(
@@ -58,15 +63,15 @@ internal class CodingSessionController
 
         dateTime.hour = AnsiConsole.Prompt(
             new TextPrompt<int>("Enter the hour:")
-                .Validate(hour => (hour >= 1 && hour <= 23)
+                .Validate(hour => (hour >= 0 && hour <= 23)
                     ? ValidationResult.Success()
-                    : ValidationResult.Error("Invalid day. Enter an hour between 1 and 23.")
+                    : ValidationResult.Error("Invalid hour. Enter an hour between 1 and 23.")
                 ))
                 .ToString();
 
         dateTime.minute = AnsiConsole.Prompt(
             new TextPrompt<int>("Enter the minute:")
-            .Validate(min => (min >= 1 && min <= 59)
+            .Validate(min => (min >= 0 && min <= 59)
                 ? ValidationResult.Success()
                 : ValidationResult.Error("Invalid minute. Enter a minute between 1 and 59.")))
             .ToString();
