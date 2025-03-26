@@ -9,17 +9,26 @@ internal class CodingSessionController
     public static void AddItem()
     {
         string format = "yyyy MMMM dd HH mm";
+
+        Console.WriteLine("Please enter the start date and time for your coding session.");
+
         string startTime = GetDate();
         startTime = Regex.Replace(startTime, @"(\b\d\b)", "0$1");
         DateTime startDate = DateTime.ParseExact(startTime, format, CultureInfo.InvariantCulture);
-        Console.WriteLine(startTime);
-        string endTime = GetDate();
-        endTime = Regex.Replace(endTime, @"(\b\d\b)", "0$1");
-        DateTime endDate = DateTime.ParseExact(endTime, format, CultureInfo.InvariantCulture);
-        if (endDate > startDate)
-            Console.WriteLine("Dates entered in correct order.");
-        else
-            Console.WriteLine("ERROR! endDate occurred prior to startDate.");
+
+        Console.WriteLine("Please enter the end date and time for your coding session.");
+
+        DateTime endDate;
+
+        do
+        {
+            string endTime = GetDate();
+            endTime = Regex.Replace(endTime, @"(\b\d\b)", "0$1");
+            endDate = DateTime.ParseExact(endTime, format, CultureInfo.InvariantCulture);
+
+            if (endDate < startDate)
+                Console.WriteLine($"Please enter an end date that has occurred after the start time {startDate}");
+        } while (endDate < startDate);
 
         TimeSpan sessionLength = endDate - startDate;
 
